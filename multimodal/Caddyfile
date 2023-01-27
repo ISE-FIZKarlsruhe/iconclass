@@ -1,0 +1,4 @@
+:80
+encode zstd gzip
+templates
+file_server browse

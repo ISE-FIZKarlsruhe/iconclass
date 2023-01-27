@@ -1,0 +1,5 @@
+http://localhost:50000
+
+encode zstd gzip
+templates
+file_server browse

@@ -1,5 +1,8 @@
 # Multimodal Search on Iconclass using Vision-Language Models
 
+This content is published on the URI: [https://demo.fiz-karlsruhe.de/iconclass/multimodal/](https://demo.fiz-karlsruhe.de/iconclass/multimodal/)
+
+
 ## Docker container
 
 This can be run using the command:

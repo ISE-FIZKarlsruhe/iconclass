@@ -1,3 +1,7 @@
+# Multimodal Search on Iconclass using Vision-Language Models
+
+## Docker container
+
 This can be run using the command:
 
 ```shell

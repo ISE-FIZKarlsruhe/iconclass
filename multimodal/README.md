@@ -1,6 +1,6 @@
 # Multimodal Search on Iconclass using Vision-Language Models
 
-This content is published on the URI: [https://demo.fiz-karlsruhe.de/iconclass/multimodal/](https://demo.fiz-karlsruhe.de/iconclass/multimodal/index.html)
+This content is published on the URI: [https://demo.fiz-karlsruhe.de/iconclass/multimodal/index.html](https://demo.fiz-karlsruhe.de/iconclass/multimodal/index.html)
 
 
 ## Docker container

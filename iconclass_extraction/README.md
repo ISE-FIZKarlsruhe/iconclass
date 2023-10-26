@@ -17,8 +17,10 @@ to execute either by hand or in code:
 
 1. Load texts containing iconclass codes and store them
    batchwise in text files. Within each file, the texts
-   are separated by empty lines. To do so, adjust and
-   run the [TBD] script.
+   are separated by empty lines. To do so, run the
+   script `extract_text_to_annotate.py`. If the source
+   file format deviates from .nt, you might have to
+   implement a custom load method.
 
 2. Annotate the created text file using
    [this tool](https://tecoholic.github.io/ner-annotator/).

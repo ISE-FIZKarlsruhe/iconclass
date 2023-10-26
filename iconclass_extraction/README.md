@@ -11,6 +11,10 @@ The extraction uses a custom trained NER tagger based
 on spacy. For that, the following steps are neccessary
 to execute either by hand or in code:
 
+0. Rename the .template.env-file to .env and fill in
+   the corresponding file locations according to your
+   setup.
+
 1. Load texts containing iconclass codes and store them
    batchwise in text files. Within each file, the texts
    are separated by empty lines. To do so, adjust and

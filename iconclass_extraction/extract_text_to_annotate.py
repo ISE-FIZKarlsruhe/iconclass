@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from dotenv import load_dotenv
+import hashlib
 from os import getenv, path, makedirs
 import re
 from typing import Iterator, List
@@ -51,6 +52,21 @@ def save_batch(data_batch: List[str], dir_path: str) -> None:
             target_file.write(entry)
 
 
+def has_been_encountered(text: str) -> bool:
+    if not hasattr(has_been_encountered, "hash_set"):
+        has_been_encountered.hash_set = set()
+
+    text_hash = str(
+        hashlib.md5(text.encode("utf-8"), usedforsecurity=False).hexdigest()
+    )
+
+    if text_hash in has_been_encountered.hash_set:
+        return True
+
+    has_been_encountered.hash_set.add(text_hash)
+    return False
+
+
 if __name__ == "__main__":
     if not path.exists(TARGET_DIR):
         makedirs(TARGET_DIR)
@@ -60,6 +76,10 @@ if __name__ == "__main__":
     current_batch: List[str] = []
     for line in load_nt_texts(DATA_SOURCE_PATH):
         if not contains_iconclass(line):
+            continue
+
+        # avoid duplicates
+        if has_been_encountered(line):
             continue
 
         current_batch.append(line)

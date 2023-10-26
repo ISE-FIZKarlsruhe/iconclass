@@ -36,8 +36,8 @@ def load_nt_texts(path: str) -> Iterator[str]:
             yield cleansed_line
 
 
-def contains_iconclass(text: str) -> bool:
-    match = re.search(r"\d{2} ?[a-zA-Z]{1,2} ?\d{1,2}", text)
+def contains_iconclass_candidate(text: str) -> bool:
+    match = re.search(r"\d{2} ?[a-zA-Z]{1,2}", text)
     return not match is None
 
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     current_batch: List[str] = []
     for line in load_nt_texts(DATA_SOURCE_PATH):
-        if not contains_iconclass(line):
+        if not contains_iconclass_candidate(line):
             continue
 
         # avoid duplicates

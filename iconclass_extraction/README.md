@@ -29,7 +29,7 @@ to execute either by hand or in code:
    spacy's requirements. For that, execute the `format_annotated_data.py` script.
 
 4. Create a config file for your training setup as described
-   [here](https://spacy.io/usage/training#config).
+   [here](https://spacy.io/usage/training#quickstart).
 
 5. Train your model by running
    `python -m spacy train config.cfg --output ./output --paths.train ./train.spacy --paths.dev ./dev.spacy`

@@ -26,7 +26,7 @@ to execute either by hand or in code:
    [this tool](https://tecoholic.github.io/ner-annotator/).
 
 3. Adjust the format of the annotated data to match
-   spacy's requirements. For that, execute the [TBD] script.
+   spacy's requirements. For that, execute the `format_annotated_data.py` script.
 
 4. Create a config file for your training setup as described
    [here](https://spacy.io/usage/training#config).

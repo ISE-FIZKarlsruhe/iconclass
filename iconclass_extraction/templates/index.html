@@ -13,16 +13,47 @@
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Iconclass Extraction</a>
-              <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Iconclass Extraction</a>
+        <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#">Extract</a>
                 </li>
               </ul> -->
-          </div>
-      </nav>
+      </div>
+    </nav>
 
-    <div class="container"></div>
+    <div class="container">
+      <textarea id="source_text" cols="30" rows="10"></textarea>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-outline-dark" id="request_extraction_button">
+          Extract Iconclass Codes
+        </button>
+      </div>
+    </div>
+
+    <script>
+      var xhr = new XMLHttpRequest();
+
+      xhr.onload = function (res) {
+        let htmlText = res['target']['responseText'];
+        document.body.innerHTML = htmlText;
+      };
+
+      document.getElementById('request_extraction_button').addEventListener(
+        'click',
+        function () {
+          let text = document.getElementById('source_text').value;
+
+          xhr.open('POST', 'http://localhost:8000/annotate', true);
+          xhr.send(
+            JSON.stringify({
+              texts: [text],
+            })
+          );
+        },
+        false
+      );
+    </script>
   </body>
 </html>

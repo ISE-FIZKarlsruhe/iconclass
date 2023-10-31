@@ -13,27 +13,37 @@
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Iconclass Extraction</a>
-              <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Iconclass Extraction</a>
+        <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#">Extract</a>
                 </li>
               </ul> -->
-          </div>
-      </nav>
+      </div>
+    </nav>
 
     <div class="container">
       {% for annotation in annotations %}
 
       <div class="row">
         <div class="col-md-6">
+          {% if annotation["text"]|length > 200 %}
+          <p>{{annotation["text"][:200]}}...:</p>
+          {% else %}
           <p>{{annotation["text"]}}:</p>
+          {% endif %}
         </div>
         <div class="col-md-6">
-          {% for code in annotation["codes"] %}
-          <p>{{code}}</p>
-          {% endfor %}
+          <p>
+            {% for code in annotation["codes"] %}
+            <span>{{code}} </span>
+            {% endfor %}
+
+            {% if annotation["codes"]|length < 1 %}
+              <span>No Codes found.</span>
+            {% endif %}
+          </p>
         </div>
       </div>
       {% endfor %}

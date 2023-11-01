@@ -10,6 +10,15 @@
       crossorigin="anonymous"
     />
     <title>Iconclass Extraction</title>
+    <style>
+      .navbar {
+        margin-bottom: 20px;
+      }
+
+      .submit-button {
+        margin-top: 15px;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark">
@@ -30,17 +39,16 @@
             <textarea
               name="text"
               id="text_input"
-              cols="30"
-              rows="10"
               placeholder="Text to extract codes from..."
               class="form-control"
               required
+              style="height: 200px;"
             ></textarea>
             <label for="text_input">Text to extract:</label>
         </div>
 
         <div class="d-grid col-8 mx-auto">
-          <button class="btn btn-outline-dark" type="submit">
+          <button class="submit-button btn btn-outline-dark" type="submit">
             Extract Iconclass Codes
           </button>
         </div>

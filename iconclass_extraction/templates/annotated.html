@@ -10,6 +10,11 @@
       crossorigin="anonymous"
     />
     <title>Iconclass Extraction</title>
+    <style>
+      .navbar {
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark">
@@ -27,14 +32,14 @@
       {% for annotation in annotations %}
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5 bg-light">
           {% if annotation["text"]|length > 200 %}
           <p>{{annotation["text"][:200]}}...:</p>
           {% else %}
           <p>{{annotation["text"]}}:</p>
           {% endif %}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
           <p>
             {% for code in annotation["codes"] %}
             <span class="badge bg-light text-dark">{{code}} </span>

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Response, Request
+from fastapi import FastAPI, Response, Request, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 import spacy
-from typing import List
+from typing import List, Annotated
 
 load_dotenv()
 
@@ -51,17 +51,11 @@ def read_root(request: Request):
 
 
 @app.post("/annotate")
-async def get_iconclass_codes(request: Request, response: Response):
-    body = await request.json()
-
-    if not "texts" in body:
-        response.status_code = 400
-        return response
-
-    annotations = []
-    for text in body["texts"]:
-        codes = extract_iconclass_codes(text)
-        annotations.append({"text": text, "codes": codes})
+async def get_iconclass_codes(
+    text: Annotated[str, Form()], request: Request, response: Response
+):
+    codes = extract_iconclass_codes(text)
+    annotations = [{"text": text, "codes": codes}]
 
     return templates.TemplateResponse(
         "annotated.html", {"request": request, "annotations": annotations}

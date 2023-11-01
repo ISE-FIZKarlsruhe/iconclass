@@ -24,36 +24,27 @@
     </nav>
 
     <div class="container">
-      <textarea id="source_text" cols="30" rows="10"></textarea>
-      <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-outline-dark" id="request_extraction_button">
-          Extract Iconclass Codes
-        </button>
-      </div>
+      <form action="annotate" method="POST">
+        <div class="form-floating">
+            
+            <textarea
+              name="text"
+              id="text_input"
+              cols="30"
+              rows="10"
+              placeholder="Text to extract codes from..."
+              class="form-control"
+              required
+            ></textarea>
+            <label for="text_input">Text to extract:</label>
+        </div>
+
+        <div class="d-grid col-8 mx-auto">
+          <button class="btn btn-outline-dark" type="submit">
+            Extract Iconclass Codes
+          </button>
+        </div>
+      </form>
     </div>
-
-    <script>
-      var xhr = new XMLHttpRequest();
-
-      xhr.onload = function (res) {
-        let htmlText = res['target']['responseText'];
-        document.body.innerHTML = htmlText;
-      };
-
-      document.getElementById('request_extraction_button').addEventListener(
-        'click',
-        function () {
-          let text = document.getElementById('source_text').value;
-
-          xhr.open('POST', 'http://localhost:8000/annotate', true);
-          xhr.send(
-            JSON.stringify({
-              texts: [text],
-            })
-          );
-        },
-        false
-      );
-    </script>
   </body>
 </html>

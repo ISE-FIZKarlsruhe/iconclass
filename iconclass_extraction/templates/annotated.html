@@ -37,7 +37,7 @@
         <div class="col-md-6">
           <p>
             {% for code in annotation["codes"] %}
-            <span>{{code}} </span>
+            <span class="badge bg-light text-dark">{{code}} </span>
             {% endfor %}
 
             {% if annotation["codes"]|length < 1 %}

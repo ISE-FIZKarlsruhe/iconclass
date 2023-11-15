@@ -5,7 +5,7 @@ from fastapi import FastAPI, Response, Request, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 import spacy
-from spacy.tokens import Token
+from spacy.tokens import Token, Span
 from typing import List, Annotated, Union
 
 load_dotenv()
@@ -28,9 +28,12 @@ def extract_iconclass_codes(text: str) -> List[str]:
             code = ent.text.strip()
             code = "".join(code.split(" "))
 
-            bracket_code = extract_bracket_details(ent[-1])
-            if bracket_code is not None:
-                code += bracket_code
+            try:
+                bracket_code = extract_bracket_details(ent[-1])
+                if bracket_code is not None:
+                    code += bracket_code
+            except Exception as e:
+                print(str(e))
 
             codes.append(code)
             last_start_code = codes[-1]
@@ -44,15 +47,17 @@ def extract_iconclass_codes(text: str) -> List[str]:
             cont_code = ent.text.strip()
             cont_code = "".join(cont_code.split(" "))
 
-            bracket_code = extract_bracket_details(ent[-1])
-            if bracket_code is not None:
-                cont_code += bracket_code
+            try:
+                bracket_code = extract_bracket_details(ent[-1])
+                if bracket_code is not None:
+                    cont_code += bracket_code
+            except Exception as e:
+                print(str(e))
 
             new_code = f"{last_start_code}{cont_code}"
             codes.append(new_code)
 
     return codes
-
 
 def extract_bracket_details(token: Token) -> Union[str, None]:
     if token.nbor(1).text.strip()[0] != "(":

@@ -20,28 +20,28 @@ def extract_iconclass_codes(text: str) -> List[str]:
     doc = nlp(text)
 
     codes = []
-    continued_codes = []
+    last_start_code = None
 
     for ent in doc.ents:
         if ent.label_ == "IC_START":
             codes.append(ent.text.strip())
+            last_start_code = codes[-1]
 
         elif ent.label_ == "IC_CONTD":
             # edge case, where wrongly detected cont before
             # first starting iconclass code.
-            if len(codes) == 0:
+            if last_start_code is None:
                 continue
 
-            cont_code = ent.text.replace("+", "").replace("(", "").replace(")", "")
+            cont_code = ent.text.strip()
 
-            if " " in codes[-1]:
-                new_code = f"{codes[-1]} {cont_code}"
+            if " " in last_start_code:
+                new_code = f"{last_start_code} {cont_code}"
             else:
-                new_code = f"{codes[-1]}{cont_code}"
+                new_code = f"{last_start_code}{cont_code}"
 
-            continued_codes.append(new_code)
+            codes.append(new_code)
 
-    codes = codes + continued_codes
     return codes
 
 

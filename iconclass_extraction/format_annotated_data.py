@@ -9,19 +9,14 @@ from spacy.tokens import DocBin, Doc
 from tqdm import tqdm
 from typing import Iterator, List, Tuple, Dict
 
+from utils.os_ import get_env
+
 load_dotenv()
 
 TRAIN_TEST_SPLIT: float = 0.7
 
-ANNOTATIONS_DIR = getenv("ANNOTATIONS_DIR")
-assert (
-    ANNOTATIONS_DIR is not None
-), "The environment variable ANNOTATIONS_DIR has not been defined!"
-
-SPACY_TARGET_DIR = getenv("SPACY_ANNOTATIONS_DIR")
-assert (
-    SPACY_TARGET_DIR is not None
-), "The environment variable SPACY_ANNOTATIONS_DIR has not been defined!"
+ANNOTATIONS_DIR = get_env("ANNOTATIONS_DIR")
+SPACY_TARGET_DIR = get_env("SPACY_ANNOTATIONS_DIR")
 
 
 def format_annotated_data(

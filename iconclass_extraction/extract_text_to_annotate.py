@@ -7,20 +7,15 @@ import re
 from typing import Iterator, List
 from uuid import uuid4
 
+from utils.os_ import get_env
+
 load_dotenv()
 
 BATCH_SIZE: int = 100
 MAX_ENTRIES: int = 10000
 
-DATA_SOURCE_PATH = getenv("SOURCE_DATA_FILE")
-assert (
-    DATA_SOURCE_PATH is not None
-), "The environment variable SOURCE_DATA_FILE has not been defined!"
-
-TARGET_DIR = getenv("EXTRACTED_TEXT_DIR")
-assert (
-    DATA_SOURCE_PATH is not None
-), "The environment variable TARGET_DIR has not been defined!"
+DATA_SOURCE_PATH = get_env("SOURCE_DATA_FILE")
+TARGET_DIR = get_env("EXTRACTED_TEXT_DIR")
 
 
 def load_nt_texts(path: str) -> Iterator[str]:

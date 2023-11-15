@@ -5,7 +5,8 @@ from fastapi import FastAPI, Response, Request, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 import spacy
-from typing import List, Annotated
+from spacy.tokens import Token
+from typing import List, Annotated, Union
 
 load_dotenv()
 
@@ -24,7 +25,13 @@ def extract_iconclass_codes(text: str) -> List[str]:
 
     for ent in doc.ents:
         if ent.label_ == "IC_START":
-            codes.append(ent.text.strip())
+            code = ent.text.strip()
+
+            bracket_code = extract_bracket_details(ent[-1])
+            if bracket_code is not None:
+                code += bracket_code
+
+            codes.append(code)
             last_start_code = codes[-1]
 
         elif ent.label_ == "IC_CONTD":
@@ -35,6 +42,10 @@ def extract_iconclass_codes(text: str) -> List[str]:
 
             cont_code = ent.text.strip()
 
+            bracket_code = extract_bracket_details(ent[-1])
+            if bracket_code is not None:
+                cont_code += bracket_code
+
             if " " in last_start_code:
                 new_code = f"{last_start_code} {cont_code}"
             else:
@@ -43,6 +54,24 @@ def extract_iconclass_codes(text: str) -> List[str]:
             codes.append(new_code)
 
     return codes
+
+
+def extract_bracket_details(token: Token) -> Union[str, None]:
+    if "(" not in token.nbor().text.strip():
+        return None
+
+    bracket_start_i = token.i + 1
+    bracket_end_i = None
+
+    for i in range(1, 10):  # 10 as arbitrary max threshold
+        if ")" in token.nbor(i).text.strip():
+            bracket_end_i = token.i + i
+            break
+
+    else:
+        return None
+
+    return token.doc[bracket_start_i : bracket_end_i + 1].text.strip()
 
 
 @app.get("/")

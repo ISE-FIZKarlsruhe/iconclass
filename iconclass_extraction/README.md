@@ -5,7 +5,27 @@ iconclass codes from text.
 
 ## Installation
 
-## Prerequisites
+Create a [virtual environment](https://docs.python.org/3/library/venv.html)
+by executing the following command:
+
+```bash
+python3 -m venv venv
+```
+
+To activate the virtual environment, execute:
+
+```bash
+source venv/bin/activate
+```
+
+Then, install all python libraries, the project relies on using
+the package manager [pip](https://pip.pypa.io/en/stable/):
+
+```bash
+pip3 install -r requirements.txt
+```
+
+## Model Training
 
 The extraction uses a custom trained NER tagger based
 on spacy. For that, the following steps are neccessary
@@ -22,8 +42,12 @@ to execute either by hand or in code:
    file format deviates from .nt, you might have to
    implement a custom load method.
 
-2. Annotate the created text file using
+2. Annotate the created text file through
    [this tool](https://tecoholic.github.io/ner-annotator/).
+   Use the named entity tags "IC_START" and "IC_CONTD" to label new
+   iconclass codes and continuations respectively.
+   The names you assign to those labels are important,
+   since as of now they are hard coded in downstream scripts.
 
 3. Adjust the format of the annotated data to match
    spacy's requirements. For that, execute the `format_annotated_data.py` script.
@@ -38,6 +62,27 @@ For an external example of the described process,
 see [this code](https://github.com/dreji18/NER-Training-Spacy-3.0/blob/main/NER%20Training%20with%20Spacy%20v3%20Notebook.ipynb).
 
 ## Usage
+
+Once the required dependencies have been installed,
+you can run the test server by executing
+
+```bash
+uvicorn server:app --reload
+```
+
+To include the extraction logic in other scripts,
+load the trained nlp model and pass it to the
+_extract_iconclass_codes_ function as follows:
+
+```python
+import spacy
+from extract_iconclass_codes import extract_iconclass_codes
+
+nlp = spacy.load("./data/output/model-last")
+
+text = "..."
+codes = extract_iconclass_codes(text, nlp=nlp)
+```
 
 ## Contributing
 

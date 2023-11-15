@@ -25,6 +25,14 @@ the package manager [pip](https://pip.pypa.io/en/stable/):
 pip3 install -r requirements.txt
 ```
 
+After installing all dependencies, install the pretrained
+spacy you wish to use as base model.
+For example:
+
+```bash
+python3 -m spacy download en_core_web_sm
+```
+
 ## Model Training
 
 The extraction uses a custom trained NER tagger based

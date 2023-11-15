@@ -26,6 +26,7 @@ def extract_iconclass_codes(text: str) -> List[str]:
     for ent in doc.ents:
         if ent.label_ == "IC_START":
             code = ent.text.strip()
+            code = "".join(code.split(" "))
 
             bracket_code = extract_bracket_details(ent[-1])
             if bracket_code is not None:
@@ -41,16 +42,13 @@ def extract_iconclass_codes(text: str) -> List[str]:
                 continue
 
             cont_code = ent.text.strip()
+            cont_code = "".join(cont_code.split(" "))
 
             bracket_code = extract_bracket_details(ent[-1])
             if bracket_code is not None:
                 cont_code += bracket_code
 
-            if " " in last_start_code:
-                new_code = f"{last_start_code} {cont_code}"
-            else:
-                new_code = f"{last_start_code}{cont_code}"
-
+            new_code = f"{last_start_code}{cont_code}"
             codes.append(new_code)
 
     return codes

@@ -57,21 +57,22 @@ def extract_iconclass_codes(text: str) -> List[str]:
 
 
 def extract_bracket_details(token: Token) -> Union[str, None]:
-    if "(" not in token.nbor().text.strip():
+    if token.nbor(1).text.strip()[0] != "(":
         return None
 
-    bracket_start_i = token.i + 1
-    bracket_end_i = None
+    for j in range(1, 10):  # 10 as arbitrary max threshold
+        if token.i + j >= len(token.doc):
+            return None
 
-    for i in range(1, 10):  # 10 as arbitrary max threshold
-        if ")" in token.nbor(i).text.strip():
-            bracket_end_i = token.i + i
-            break
+        # Avoid FP cases where brackets are included but not at the end
+        # (ex. "(Stadt-)Türme")
+        if ")" in token.nbor(j).text and not token.nbor(j).text.strip()[-1] == ")":
+            return None
 
-    else:
-        return None
+        if token.nbor(j).text.strip()[-1] == ")":
+            return token.doc[token.i + 1 : token.i + j + 1].text.strip()
 
-    return token.doc[bracket_start_i : bracket_end_i + 1].text.strip()
+    return None
 
 
 @app.get("/")

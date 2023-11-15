@@ -34,8 +34,8 @@ def format_annotated_data(
             for i in range(len(annotations["entities"])):
                 annotations["entities"][i] = tuple(annotations["entities"][i])
 
-    for text, annotations in tqdm(train_data):  # data in previous format
-        doc = nlp.make_doc(text)  # create doc object from text
+    for text, annotations in tqdm(train_data):
+        doc = nlp.make_doc(text)
 
         ents = []
         for start, end, label in annotations["entities"]:  # add character indexes
@@ -46,8 +46,7 @@ def format_annotated_data(
 
             ents.append(span)
 
-        doc.ents = ents  # label the text with the ents
-
+        doc.ents = ents
         yield doc
 
 

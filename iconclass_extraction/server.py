@@ -25,17 +25,9 @@ def extract_iconclass_codes(text: str) -> List[str]:
 
     for ent in doc.ents:
         if ent.label_ == "IC_START":
-            code = ent.text.strip()
-            code = "".join(code.split(" "))
-
-            try:
-                bracket_code = extract_bracket_details(ent[-1])
-                if bracket_code is not None:
-                    code += bracket_code
-            except Exception as e:
-                print(str(e))
-
+            code = extract_start_code(ent)
             codes.append(code)
+
             last_start_code = codes[-1]
 
         elif ent.label_ == "IC_CONTD":
@@ -44,20 +36,40 @@ def extract_iconclass_codes(text: str) -> List[str]:
             if last_start_code is None:
                 continue
 
-            cont_code = ent.text.strip()
-            cont_code = "".join(cont_code.split(" "))
-
-            try:
-                bracket_code = extract_bracket_details(ent[-1])
-                if bracket_code is not None:
-                    cont_code += bracket_code
-            except Exception as e:
-                print(str(e))
-
-            new_code = f"{last_start_code}{cont_code}"
+            new_code = extract_continued_code(ent, last_start_code)
             codes.append(new_code)
 
     return codes
+
+
+def extract_start_code(ent: Span) -> str:
+    code = ent.text.strip()
+    code = "".join(code.split(" "))
+
+    try:
+        bracket_code = extract_bracket_details(ent[-1])
+        if bracket_code is not None:
+            code += bracket_code
+    except Exception as e:
+        print(str(e))
+
+    return code
+
+
+def extract_continued_code(ent: Span, last_start_code: str) -> str:
+    cont_code = ent.text.strip()
+    cont_code = "".join(cont_code.split(" "))
+
+    try:
+        bracket_code = extract_bracket_details(ent[-1])
+        if bracket_code is not None:
+            cont_code += bracket_code
+    except Exception as e:
+        print(str(e))
+
+    new_code = f"{last_start_code}{cont_code}"
+    return new_code
+
 
 def extract_bracket_details(token: Token) -> Union[str, None]:
     if token.nbor(1).text.strip()[0] != "(":

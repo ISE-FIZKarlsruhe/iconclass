@@ -33,6 +33,37 @@ def format_annotated_data(
 
         train_data = [tuple(item) for item in data["annotations"]]
 
+        for text, annotations in train_data:
+            for i in range(len(annotations["entities"])):
+                annotations["entities"][i] = tuple(annotations["entities"][i])
+
+    for text, annotations in tqdm(train_data):
+        doc = nlp.make_doc(text)
+
+        ents = []
+        for start, end, label in annotations["entities"]:  # add character indexes
+            span = doc.char_span(start, end, label=label, alignment_mode="contract")
+
+            if span is None:
+                continue
+
+            ents.append(span)
+
+        doc.ents = ents
+        yield doc
+
+
+def format_annotated_data_with_augmentation(
+    annotation_path: str, nlp: spacy.language.Language
+) -> Iterator[Doc]:
+    # Inspired by https://github.com/dreji18/NER-Training-Spacy-3.0/blob/main/NER%20Training%20Data%20Annotation.ipynb
+
+    train_data: List[Tuple[str, Dict]] = None
+    with open(annotation_path) as data_file:
+        data = json.load(data_file)
+
+        train_data = [tuple(item) for item in data["annotations"]]
+
         for k, (text, annotations) in enumerate(train_data):
             # Sort annotations by start index
             annotations["entities"].sort(key=lambda item: item[0])
@@ -104,7 +135,7 @@ if __name__ == "__main__":
         if not file_path.endswith(".json"):
             continue
 
-        for doc in format_annotated_data(annotation_path=file_path, nlp=nlp):
+        for doc in format_annotated_data_with_augmentation(annotation_path=file_path, nlp=nlp):
             docs.append(doc)
 
     spacy_train_path = f"{SPACY_TARGET_DIR}/train.spacy"

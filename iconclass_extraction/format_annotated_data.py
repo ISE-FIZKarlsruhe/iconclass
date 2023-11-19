@@ -15,6 +15,9 @@ load_dotenv()
 
 TRAIN_TEST_SPLIT: float = 0.7
 
+# Removes whitespaces for percentage of labels
+AUGMENTATION_PROBABILITY: float = 0.5
+
 ANNOTATIONS_DIR = get_env("ANNOTATIONS_DIR")
 SPACY_TARGET_DIR = get_env("SPACY_ANNOTATIONS_DIR")
 
@@ -30,9 +33,34 @@ def format_annotated_data(
 
         train_data = [tuple(item) for item in data["annotations"]]
 
-        for text, annotations in train_data:
+        for k, (text, annotations) in enumerate(train_data):
+            # Sort annotations by start index
+            annotations["entities"].sort(key=lambda item: item[0])
+
+            whitespace_offset = 0
             for i in range(len(annotations["entities"])):
-                annotations["entities"][i] = tuple(annotations["entities"][i])
+                start, end, label = annotations["entities"][i]
+
+                start -= whitespace_offset
+                end -= whitespace_offset
+
+                if random() <= AUGMENTATION_PROBABILITY:
+                    labelled_text = text[start:end]
+
+                    space_indexes = [
+                        start + i for i, char in enumerate(labelled_text) if char == " "
+                    ]
+
+                    # Reverse order, to avoid having to adjust later indexes.
+                    for j in reversed(space_indexes):
+                        text = text[:j] + text[j + 1 :]
+
+                    end -= len(space_indexes)
+                    whitespace_offset += len(space_indexes)
+
+                annotations["entities"][i] = (start, end, label)
+
+            train_data[k] = (text, annotations)
 
     for text, annotations in tqdm(train_data):
         doc = nlp.make_doc(text)

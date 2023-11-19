@@ -9,10 +9,12 @@ from spacy.tokens import Token, Span
 from typing import List, Annotated, Union
 
 from extract_iconclass_codes import extract_iconclass_codes
+from utils.os_ import get_env
 
 load_dotenv()
 
-nlp = spacy.load("./data/output/model-last")
+SPACY_MODEL_PATH = get_env("SPACY_MODEL_PATH")
+nlp = spacy.load(SPACY_MODEL_PATH)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")

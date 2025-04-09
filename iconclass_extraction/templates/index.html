@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>Iconclass Extraction</title>
+    <style>
+      .navbar {
+        margin-bottom: 20px;
+      }
+
+      .submit-button {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./">Iconclass Extraction</a>
+        <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Extract</a>
+                </li>
+              </ul> -->
+      </div>
+    </nav>
+
+    <div class="container">
+      <form action="annotate" method="POST">
+        <div class="form-floating">
+            
+            <textarea
+              name="text"
+              id="text_input"
+              placeholder="Text to extract codes from..."
+              class="form-control"
+              required
+              style="height: 200px;"
+            ></textarea>
+            <label for="text_input">Text to extract:</label>
+        </div>
+
+        <div class="d-grid col-8 mx-auto">
+          <button class="submit-button btn btn-outline-dark" type="submit">
+            Extract Iconclass Codes
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
